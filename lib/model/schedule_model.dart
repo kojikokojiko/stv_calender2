@@ -5,11 +5,11 @@ part 'schedule_model.freezed.dart';
 class ScheduleModel with _$ScheduleModel {
   const factory ScheduleModel({
     /// 友人の名前
-    required String title,
-    required bool isAllDay ,
-    required DateTime startDay,
-    required DateTime endDay,
-    required String comment,
+    @Default(null) String? title,
+    @Default(null)bool? isAllDay ,
+    @Default(null) DateTime? startDay,
+    @Default(null) DateTime? endDay,
+    @Default(null) String? comment,
     //requiredで必須項目にする
   }) = _ScheduleModel;
 }

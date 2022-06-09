@@ -13,9 +13,9 @@ class AddSchedulePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final _startDay = useState(selectedDay!);
-    final _endDay = useState(selectedDay!);
-    final _isAllDay = useState(false);
+    final startDay = useState(selectedDay!);
+    final endDay = useState(selectedDay!);
+    final isAllDay = useState(false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -93,9 +93,9 @@ class AddSchedulePage extends HookConsumerWidget {
                         children: <Widget>[
                           const Text("終日"),
                           Switch(
-                            value: _isAllDay.value,
+                            value: isAllDay.value,
                             onChanged: (e) {
-                              _isAllDay.value = e;
+                              isAllDay.value = e;
                             },
                           ),
                         ],
@@ -113,7 +113,7 @@ class AddSchedulePage extends HookConsumerWidget {
                               showCupertinoModalPopup(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  DateTime tempDay=_startDay.value;
+                                  DateTime tempDay=startDay.value;
                                   return Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -143,7 +143,7 @@ class AddSchedulePage extends HookConsumerWidget {
                                             CupertinoButton(
                                               onPressed: () {
                                                 // 変更
-                                                _startDay.value=tempDay;
+                                                startDay.value=tempDay;
                                                 Navigator.of(context).pop();
                                               },
                                               padding:
@@ -177,7 +177,7 @@ class AddSchedulePage extends HookConsumerWidget {
                                               child: CupertinoDatePicker(
                                                 use24hFormat: true,
                                                 minuteInterval: 15,
-                                                initialDateTime: _startDay
+                                                initialDateTime: startDay
                                                     .value,
                                                 onDateTimeChanged: (
                                                     value) {
@@ -185,7 +185,7 @@ class AddSchedulePage extends HookConsumerWidget {
                                                   // ref.read(scheduleEndTimeProvider.state).update((state) => value);
                                                 },
 
-                                                mode: _isAllDay.value
+                                                mode: isAllDay.value
                                                     ? CupertinoDatePickerMode
                                                     .date
                                                     : CupertinoDatePickerMode
@@ -195,7 +195,6 @@ class AddSchedulePage extends HookConsumerWidget {
                                           ),
                                         ),
                                       ),
-
                                     ],
                                   );
                                 },
@@ -203,9 +202,9 @@ class AddSchedulePage extends HookConsumerWidget {
                             },
 
                             child: Text(
-                              _isAllDay.value ? DateFormat("yyyy-MM-dd").format(
-                                  _startDay.value) : DateFormat(
-                                  "yyyy-MM-dd HH:mm").format(_startDay.value),
+                              isAllDay.value ? DateFormat("yyyy-MM-dd").format(
+                                  startDay.value) : DateFormat(
+                                  "yyyy-MM-dd HH:mm").format(startDay.value),
                               style: const TextStyle(color: Colors.black),
                             ),
                           )
@@ -225,7 +224,7 @@ class AddSchedulePage extends HookConsumerWidget {
                               showCupertinoModalPopup(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  DateTime tempDay=_endDay.value;
+                                  DateTime tempDay=endDay.value;
                                   // _endDay
                                   return Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -256,7 +255,7 @@ class AddSchedulePage extends HookConsumerWidget {
                                             CupertinoButton(
                                               onPressed: () {
                                                 // 変更
-                                                _endDay.value=tempDay;
+                                                endDay.value=tempDay;
                                                 Navigator.of(context).pop();
                                               },
                                               padding:
@@ -290,7 +289,7 @@ class AddSchedulePage extends HookConsumerWidget {
                                               child: CupertinoDatePicker(
                                                 use24hFormat: true,
                                                 minuteInterval: 15,
-                                                initialDateTime: _endDay
+                                                initialDateTime: endDay
                                                     .value,
                                                 onDateTimeChanged: (
                                                     value) {
@@ -298,7 +297,7 @@ class AddSchedulePage extends HookConsumerWidget {
                                                   // ref.read(scheduleEndTimeProvider.state).update((state) => value);
                                                 },
 
-                                                mode: _isAllDay.value
+                                                mode: isAllDay.value
                                                     ? CupertinoDatePickerMode
                                                     .date
                                                     : CupertinoDatePickerMode
@@ -315,9 +314,9 @@ class AddSchedulePage extends HookConsumerWidget {
                               );
                             },
                             child: Text(
-                              _isAllDay.value ? DateFormat("yyyy-MM-dd").format(
-                                  _endDay.value) : DateFormat(
-                                  "yyyy-MM-dd HH:mm").format(_endDay.value),
+                              isAllDay.value ? DateFormat("yyyy-MM-dd").format(
+                                  endDay.value) : DateFormat(
+                                  "yyyy-MM-dd HH:mm").format(endDay.value),
                               style: const TextStyle(color: Colors.black),
                             ),
                           ),
@@ -328,13 +327,13 @@ class AddSchedulePage extends HookConsumerWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 10, bottom: 10),
+                margin: const EdgeInsets.only(top: 10, bottom: 10),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5)),
                 width: double.infinity,
                 height: 200,
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -348,7 +347,6 @@ class AddSchedulePage extends HookConsumerWidget {
                   onChanged: (value){
                     // ref.read(contentProvider.state).update((state) => value);
                   },
-
                   onSaved: (value){
                     // ref.read(contentProvider.state).update((state) => value!);
                   },
@@ -357,16 +355,12 @@ class AddSchedulePage extends HookConsumerWidget {
                     hintText: "コメントを入力してください",
                     border: InputBorder.none,
                   ),
-
                   // 改行して複数行入力が可能なように、キーボードに改行ボタンを表示
                   keyboardType: TextInputType.multiline,
-
                   // 改行できる行数を無制限に設定
                   maxLines: null,
                 ),
               )
-
-
             ],
           ),
         ),

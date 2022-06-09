@@ -17,11 +17,11 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ScheduleModel {
   /// 友人の名前
-  String get title => throw _privateConstructorUsedError;
-  bool get isAllDay => throw _privateConstructorUsedError;
-  DateTime get startDay => throw _privateConstructorUsedError;
-  DateTime get endDay => throw _privateConstructorUsedError;
-  String get comment => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  bool? get isAllDay => throw _privateConstructorUsedError;
+  DateTime? get startDay => throw _privateConstructorUsedError;
+  DateTime? get endDay => throw _privateConstructorUsedError;
+  String? get comment => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ScheduleModelCopyWith<ScheduleModel> get copyWith =>
@@ -34,11 +34,11 @@ abstract class $ScheduleModelCopyWith<$Res> {
           ScheduleModel value, $Res Function(ScheduleModel) then) =
       _$ScheduleModelCopyWithImpl<$Res>;
   $Res call(
-      {String title,
-      bool isAllDay,
-      DateTime startDay,
-      DateTime endDay,
-      String comment});
+      {String? title,
+      bool? isAllDay,
+      DateTime? startDay,
+      DateTime? endDay,
+      String? comment});
 }
 
 /// @nodoc
@@ -62,23 +62,23 @@ class _$ScheduleModelCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isAllDay: isAllDay == freezed
           ? _value.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       startDay: startDay == freezed
           ? _value.startDay
           : startDay // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       endDay: endDay == freezed
           ? _value.endDay
           : endDay // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       comment: comment == freezed
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -91,11 +91,11 @@ abstract class _$$_ScheduleModelCopyWith<$Res>
       __$$_ScheduleModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String title,
-      bool isAllDay,
-      DateTime startDay,
-      DateTime endDay,
-      String comment});
+      {String? title,
+      bool? isAllDay,
+      DateTime? startDay,
+      DateTime? endDay,
+      String? comment});
 }
 
 /// @nodoc
@@ -121,23 +121,23 @@ class __$$_ScheduleModelCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isAllDay: isAllDay == freezed
           ? _value.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       startDay: startDay == freezed
           ? _value.startDay
           : startDay // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       endDay: endDay == freezed
           ? _value.endDay
           : endDay // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       comment: comment == freezed
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -146,23 +146,28 @@ class __$$_ScheduleModelCopyWithImpl<$Res>
 
 class _$_ScheduleModel implements _ScheduleModel {
   const _$_ScheduleModel(
-      {required this.title,
-      required this.isAllDay,
-      required this.startDay,
-      required this.endDay,
-      required this.comment});
+      {this.title = null,
+      this.isAllDay = null,
+      this.startDay = null,
+      this.endDay = null,
+      this.comment = null});
 
   /// 友人の名前
   @override
-  final String title;
+  @JsonKey()
+  final String? title;
   @override
-  final bool isAllDay;
+  @JsonKey()
+  final bool? isAllDay;
   @override
-  final DateTime startDay;
+  @JsonKey()
+  final DateTime? startDay;
   @override
-  final DateTime endDay;
+  @JsonKey()
+  final DateTime? endDay;
   @override
-  final String comment;
+  @JsonKey()
+  final String? comment;
 
   @override
   String toString() {
@@ -198,24 +203,24 @@ class _$_ScheduleModel implements _ScheduleModel {
 
 abstract class _ScheduleModel implements ScheduleModel {
   const factory _ScheduleModel(
-      {required final String title,
-      required final bool isAllDay,
-      required final DateTime startDay,
-      required final DateTime endDay,
-      required final String comment}) = _$_ScheduleModel;
+      {final String? title,
+      final bool? isAllDay,
+      final DateTime? startDay,
+      final DateTime? endDay,
+      final String? comment}) = _$_ScheduleModel;
 
   @override
 
   /// 友人の名前
-  String get title => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   @override
-  bool get isAllDay => throw _privateConstructorUsedError;
+  bool? get isAllDay => throw _privateConstructorUsedError;
   @override
-  DateTime get startDay => throw _privateConstructorUsedError;
+  DateTime? get startDay => throw _privateConstructorUsedError;
   @override
-  DateTime get endDay => throw _privateConstructorUsedError;
+  DateTime? get endDay => throw _privateConstructorUsedError;
   @override
-  String get comment => throw _privateConstructorUsedError;
+  String? get comment => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ScheduleModelCopyWith<_$_ScheduleModel> get copyWith =>
