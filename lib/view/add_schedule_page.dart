@@ -12,10 +12,12 @@ class AddSchedulePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     final _startDay = useState(selectedDay!);
     final _endDay = useState(selectedDay!);
     final _isAllDay = useState(false);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("予定の追加"),
         centerTitle: true,
@@ -325,6 +327,44 @@ class AddSchedulePage extends HookConsumerWidget {
                   ],
                 ),
               ),
+              Container(
+                margin: EdgeInsets.only(top: 10, bottom: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
+                width: double.infinity,
+                height: 200,
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                  autovalidateMode:AutovalidateMode.always ,
+                  initialValue:"",
+                  // (isEditing!)? todo!.content:"",
+                  onChanged: (value){
+                    // ref.read(contentProvider.state).update((state) => value);
+                  },
+
+                  onSaved: (value){
+                    // ref.read(contentProvider.state).update((state) => value!);
+                  },
+                  // デフォルトで表示される青い下線を削除
+                  decoration: const InputDecoration(
+                    hintText: "コメントを入力してください",
+                    border: InputBorder.none,
+                  ),
+
+                  // 改行して複数行入力が可能なように、キーボードに改行ボタンを表示
+                  keyboardType: TextInputType.multiline,
+
+                  // 改行できる行数を無制限に設定
+                  maxLines: null,
+                ),
+              )
 
 
             ],
