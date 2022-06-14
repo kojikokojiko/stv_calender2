@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:stv_calender2/view/schedule_vm.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'modal_slider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class CalenderScreen extends HookWidget {
+class CalenderScreen extends HookConsumerWidget {
   const CalenderScreen({Key? key}) : super(key: key);
 
   Color _textColor(DateTime day) {
@@ -23,7 +25,8 @@ class CalenderScreen extends HookWidget {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+
     final _focusedDay = useState(DateTime.now());
     return Scaffold(
       appBar: AppBar(

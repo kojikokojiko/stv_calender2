@@ -12,7 +12,7 @@ final scheduleProvider = StateNotifierProvider<ScheduleController, ScheduleModel
 
 
 class ScheduleController extends StateNotifier<ScheduleModel>{
-  ScheduleController():super(const ScheduleModel());
+  ScheduleController():super( ScheduleModel(startDay: DateTime.now(),endDay: DateTime.now(),title: "",comment: "",isAllDay: false),);
 
   void updateTitle(String title){
     state=state.copyWith(title:title);

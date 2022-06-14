@@ -1,11 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:stv_calender2/view/schedule_vm.dart';
 
 import 'add_schedule_page.dart';
 
-class ModalSlider extends StatelessWidget {
+
+
+
+class ModalSlider extends HookConsumerWidget {
   ModalSlider({required this.day});
 
   final DateTime day;
@@ -27,7 +32,8 @@ class ModalSlider extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final controller=ref.read(scheduleProvider.notifier);
 
     setDayList(diffDay, day);
     print(dayList);
@@ -64,6 +70,8 @@ class ModalSlider extends StatelessWidget {
                         TextButton(
                             child: const Icon(Icons.add),
                             onPressed: () {
+                              controller.updateStartDate(selectingDay);
+                              controller.updateEndDate(selectingDay);
 
                               print(selectingDay);
                               // print(ref.watch(startTimeProvider));
