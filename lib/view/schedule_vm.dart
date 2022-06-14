@@ -5,7 +5,7 @@ import '../model/schedule_model.dart';
 
 
 
-final counterProvider = StateNotifierProvider<ScheduleController, ScheduleModel>((ref) {
+final scheduleProvider = StateNotifierProvider<ScheduleController, ScheduleModel>((ref) {
   return ScheduleController();
 });
 
