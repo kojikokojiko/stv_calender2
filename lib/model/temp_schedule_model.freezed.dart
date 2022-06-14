@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'schedule_model.dart';
+part of 'temp_schedule_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,8 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$ScheduleModel {
-  /// 友人の名前
+mixin _$TempTodoItemData {
   String? get title => throw _privateConstructorUsedError;
   bool? get isAllDay => throw _privateConstructorUsedError;
   DateTime? get startDay => throw _privateConstructorUsedError;
@@ -24,15 +23,15 @@ mixin _$ScheduleModel {
   String? get comment => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ScheduleModelCopyWith<ScheduleModel> get copyWith =>
+  $TempTodoItemDataCopyWith<TempTodoItemData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ScheduleModelCopyWith<$Res> {
-  factory $ScheduleModelCopyWith(
-          ScheduleModel value, $Res Function(ScheduleModel) then) =
-      _$ScheduleModelCopyWithImpl<$Res>;
+abstract class $TempTodoItemDataCopyWith<$Res> {
+  factory $TempTodoItemDataCopyWith(
+          TempTodoItemData value, $Res Function(TempTodoItemData) then) =
+      _$TempTodoItemDataCopyWithImpl<$Res>;
   $Res call(
       {String? title,
       bool? isAllDay,
@@ -42,13 +41,13 @@ abstract class $ScheduleModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ScheduleModelCopyWithImpl<$Res>
-    implements $ScheduleModelCopyWith<$Res> {
-  _$ScheduleModelCopyWithImpl(this._value, this._then);
+class _$TempTodoItemDataCopyWithImpl<$Res>
+    implements $TempTodoItemDataCopyWith<$Res> {
+  _$TempTodoItemDataCopyWithImpl(this._value, this._then);
 
-  final ScheduleModel _value;
+  final TempTodoItemData _value;
   // ignore: unused_field
-  final $Res Function(ScheduleModel) _then;
+  final $Res Function(TempTodoItemData) _then;
 
   @override
   $Res call({
@@ -84,11 +83,11 @@ class _$ScheduleModelCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$_ScheduleModelCopyWith<$Res>
-    implements $ScheduleModelCopyWith<$Res> {
-  factory _$$_ScheduleModelCopyWith(
-          _$_ScheduleModel value, $Res Function(_$_ScheduleModel) then) =
-      __$$_ScheduleModelCopyWithImpl<$Res>;
+abstract class _$$_TempTodoItemDataCopyWith<$Res>
+    implements $TempTodoItemDataCopyWith<$Res> {
+  factory _$$_TempTodoItemDataCopyWith(
+          _$_TempTodoItemData value, $Res Function(_$_TempTodoItemData) then) =
+      __$$_TempTodoItemDataCopyWithImpl<$Res>;
   @override
   $Res call(
       {String? title,
@@ -99,15 +98,15 @@ abstract class _$$_ScheduleModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ScheduleModelCopyWithImpl<$Res>
-    extends _$ScheduleModelCopyWithImpl<$Res>
-    implements _$$_ScheduleModelCopyWith<$Res> {
-  __$$_ScheduleModelCopyWithImpl(
-      _$_ScheduleModel _value, $Res Function(_$_ScheduleModel) _then)
-      : super(_value, (v) => _then(v as _$_ScheduleModel));
+class __$$_TempTodoItemDataCopyWithImpl<$Res>
+    extends _$TempTodoItemDataCopyWithImpl<$Res>
+    implements _$$_TempTodoItemDataCopyWith<$Res> {
+  __$$_TempTodoItemDataCopyWithImpl(
+      _$_TempTodoItemData _value, $Res Function(_$_TempTodoItemData) _then)
+      : super(_value, (v) => _then(v as _$_TempTodoItemData));
 
   @override
-  _$_ScheduleModel get _value => super._value as _$_ScheduleModel;
+  _$_TempTodoItemData get _value => super._value as _$_TempTodoItemData;
 
   @override
   $Res call({
@@ -117,7 +116,7 @@ class __$$_ScheduleModelCopyWithImpl<$Res>
     Object? endDay = freezed,
     Object? comment = freezed,
   }) {
-    return _then(_$_ScheduleModel(
+    return _then(_$_TempTodoItemData(
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -144,15 +143,14 @@ class __$$_ScheduleModelCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ScheduleModel implements _ScheduleModel {
-  const _$_ScheduleModel(
+class _$_TempTodoItemData implements _TempTodoItemData {
+  const _$_TempTodoItemData(
       {this.title = null,
       this.isAllDay = null,
       this.startDay = null,
       this.endDay = null,
       this.comment = null});
 
-  /// 友人の名前
   @override
   @JsonKey()
   final String? title;
@@ -171,14 +169,14 @@ class _$_ScheduleModel implements _ScheduleModel {
 
   @override
   String toString() {
-    return 'ScheduleModel(title: $title, isAllDay: $isAllDay, startDay: $startDay, endDay: $endDay, comment: $comment)';
+    return 'TempTodoItemData(title: $title, isAllDay: $isAllDay, startDay: $startDay, endDay: $endDay, comment: $comment)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ScheduleModel &&
+            other is _$_TempTodoItemData &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.isAllDay, isAllDay) &&
             const DeepCollectionEquality().equals(other.startDay, startDay) &&
@@ -197,21 +195,19 @@ class _$_ScheduleModel implements _ScheduleModel {
 
   @JsonKey(ignore: true)
   @override
-  _$$_ScheduleModelCopyWith<_$_ScheduleModel> get copyWith =>
-      __$$_ScheduleModelCopyWithImpl<_$_ScheduleModel>(this, _$identity);
+  _$$_TempTodoItemDataCopyWith<_$_TempTodoItemData> get copyWith =>
+      __$$_TempTodoItemDataCopyWithImpl<_$_TempTodoItemData>(this, _$identity);
 }
 
-abstract class _ScheduleModel implements ScheduleModel {
-  const factory _ScheduleModel(
+abstract class _TempTodoItemData implements TempTodoItemData {
+  const factory _TempTodoItemData(
       {final String? title,
       final bool? isAllDay,
       final DateTime? startDay,
       final DateTime? endDay,
-      final String? comment}) = _$_ScheduleModel;
+      final String? comment}) = _$_TempTodoItemData;
 
   @override
-
-  /// 友人の名前
   String? get title => throw _privateConstructorUsedError;
   @override
   bool? get isAllDay => throw _privateConstructorUsedError;
@@ -223,6 +219,6 @@ abstract class _ScheduleModel implements ScheduleModel {
   String? get comment => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_ScheduleModelCopyWith<_$_ScheduleModel> get copyWith =>
+  _$$_TempTodoItemDataCopyWith<_$_TempTodoItemData> get copyWith =>
       throw _privateConstructorUsedError;
 }

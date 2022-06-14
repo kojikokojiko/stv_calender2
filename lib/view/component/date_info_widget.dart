@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../model/schedule_model.dart';
-import '../schedule_vm.dart';
+import '../../model/temp_schedule_model.dart';
+import '../temp_schedule_vm.dart';
 
 class DateInfoWidget extends StatelessWidget {
   const DateInfoWidget({
@@ -12,7 +12,7 @@ class DateInfoWidget extends StatelessWidget {
     required this.controller,
   }) : super(key: key);
 
-  final ScheduleModel state;
+  final TempTodoItemData state;
   final ScheduleController controller;
 
   @override

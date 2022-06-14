@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:stv_calender2/model/schedule_model.dart';
-import 'package:stv_calender2/view/schedule_vm.dart';
+import 'package:stv_calender2/model/temp_schedule_model.dart';
+import 'package:stv_calender2/view/temp_schedule_vm.dart';
 
 import 'component/comment_form_widget.dart';
 import 'component/date_info_widget.dart';
@@ -46,7 +46,7 @@ class AddSchedulePage extends HookConsumerWidget {
               onPressed: () async {
 
                 if(canSend=true){
-                  
+
 
                 }
               },

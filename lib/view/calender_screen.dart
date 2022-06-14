@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:stv_calender2/view/schedule_vm.dart';
+import 'package:stv_calender2/view/temp_schedule_vm.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'modal_slider.dart';

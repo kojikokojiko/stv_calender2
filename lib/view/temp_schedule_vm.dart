@@ -5,14 +5,14 @@ import '../model/temp_schedule_model.dart';
 
 
 
-final scheduleProvider = StateNotifierProvider<ScheduleController, TempScheduleModel>((ref) {
+final scheduleProvider = StateNotifierProvider<ScheduleController, TempTodoItemData>((ref) {
   return ScheduleController();
 });
 
 
 
-class ScheduleController extends StateNotifier<TempScheduleModel>{
-  ScheduleController():super( TempScheduleModel(startDay: DateTime.now(),endDay: DateTime.now(),title: "",comment: "",isAllDay: false),);
+class ScheduleController extends StateNotifier<TempTodoItemData>{
+  ScheduleController():super( TempTodoItemData(startDay: DateTime.now(),endDay: DateTime.now(),title: "",comment: "",isAllDay: false),);
 
   void updateTitle(String title){
     state=state.copyWith(title:title);
@@ -30,13 +30,4 @@ class ScheduleController extends StateNotifier<TempScheduleModel>{
   void updateComment(String comment){
     state=state.copyWith(comment:comment);
   }
-
-
-
-
-
-
-
-
-
 }

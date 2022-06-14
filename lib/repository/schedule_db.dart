@@ -8,9 +8,8 @@ import 'dart:io';
 // first, but it's needed for drift to know about the generated code
 part 'schedule_db.g.dart';
 
-// this will generate a table called "todos" for us. The rows of that table will
-// be represented by a class called "Todo".
-class Todos extends Table {
+
+class TodoItem extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get title => text().withLength(min: 1)();
@@ -41,7 +40,7 @@ LazyDatabase _openConnection() {
 
 // this annotation tells drift to prepare a database class that uses both of the
 // tables we just defined. We'll see how to use that database class in a moment.
-@DriftDatabase(tables: [Todos])
+@DriftDatabase(tables: [TodoItem])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
@@ -50,12 +49,12 @@ class MyDatabase extends _$MyDatabase {
 
   //7
   //以下追記
-  Stream<List<Todo>> watchEntries() {
-    return (select(todos)).watch();
+  Stream<List<TodoItemData>> watchEntries() {
+    return (select(todoItem)).watch();
   }
 
-  Stream<List<Todo>> watchSamedayEntries(DateTime selectday) {
-    return (select(todos)
+  Stream<List<TodoItemData>> watchSamedayEntries(DateTime selectday) {
+    return (select(todoItem)
           ..where((tbl) =>
               tbl.startDay.year.equals(selectday.year) &
               tbl.startDay.month.equals(selectday.month) &
@@ -72,7 +71,7 @@ class MyDatabase extends _$MyDatabase {
   // }
   //8
   //以下追記
-  Future<List<Todo>> get allTodoEntries => select(todos).get();
+  Future<List<TodoItemData>> get allTodoEntries => select(todoItem).get();
 
   // Stream<Todo> todoById(int id) {
   //   return (select(todos)..where((t) => t.id.equals(id))).watchSingle();
@@ -80,7 +79,7 @@ class MyDatabase extends _$MyDatabase {
 
   Future<int> addTodo(String title, String content, DateTime startDate,
       DateTime endDate, bool isAllday, bool isNotify) {
-    return into(todos).insert(TodosCompanion(
+    return into(todoItem).insert(TodoItemCompanion(
       title: Value(title),
       content: Value(content),
       startDay: Value(startDate),
@@ -89,10 +88,10 @@ class MyDatabase extends _$MyDatabase {
     ));
   }
 
-  Future<int> updateTodo(Todo todo, String title, String content,
+  Future<int> updateTodo(TodoItemData todo, String title, String content,
       DateTime startDate, DateTime endDate, bool isAllday, isNotify) {
-    return (update(todos)..where((tbl) => tbl.id.equals(todo.id))).write(
-      TodosCompanion(
+    return (update(todoItem)..where((tbl) => tbl.id.equals(todo.id))).write(
+      TodoItemCompanion(
         title: Value(title),
         content: Value(content),
         startDay: Value(startDate),
@@ -102,7 +101,7 @@ class MyDatabase extends _$MyDatabase {
     );
   }
 
-  Future<void> deleteTodo(Todo todo) {
-    return (delete(todos)..where((tbl) => tbl.id.equals(todo.id))).go();
+  Future<void> deleteTodo(TodoItemData todo) {
+    return (delete(todoItem)..where((tbl) => tbl.id.equals(todo.id))).go();
   }
 }

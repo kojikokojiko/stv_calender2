@@ -7,23 +7,23 @@ part of 'schedule_db.dart';
 // **************************************************************************
 
 // ignore_for_file: type=lint
-class Todo extends DataClass implements Insertable<Todo> {
+class TodoItemData extends DataClass implements Insertable<TodoItemData> {
   final int id;
   final String title;
   final String content;
   final DateTime? startDay;
   final DateTime? endDay;
   final bool isAllday;
-  Todo(
+  TodoItemData(
       {required this.id,
       required this.title,
       required this.content,
       this.startDay,
       this.endDay,
       required this.isAllday});
-  factory Todo.fromData(Map<String, dynamic> data, {String? prefix}) {
+  factory TodoItemData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return Todo(
+    return TodoItemData(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       title: const StringType()
@@ -54,8 +54,8 @@ class Todo extends DataClass implements Insertable<Todo> {
     return map;
   }
 
-  TodosCompanion toCompanion(bool nullToAbsent) {
-    return TodosCompanion(
+  TodoItemCompanion toCompanion(bool nullToAbsent) {
+    return TodoItemCompanion(
       id: Value(id),
       title: Value(title),
       content: Value(content),
@@ -68,10 +68,10 @@ class Todo extends DataClass implements Insertable<Todo> {
     );
   }
 
-  factory Todo.fromJson(Map<String, dynamic> json,
+  factory TodoItemData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Todo(
+    return TodoItemData(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       content: serializer.fromJson<String>(json['content']),
@@ -93,14 +93,14 @@ class Todo extends DataClass implements Insertable<Todo> {
     };
   }
 
-  Todo copyWith(
+  TodoItemData copyWith(
           {int? id,
           String? title,
           String? content,
           DateTime? startDay,
           DateTime? endDay,
           bool? isAllday}) =>
-      Todo(
+      TodoItemData(
         id: id ?? this.id,
         title: title ?? this.title,
         content: content ?? this.content,
@@ -110,7 +110,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       );
   @override
   String toString() {
-    return (StringBuffer('Todo(')
+    return (StringBuffer('TodoItemData(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('content: $content, ')
@@ -127,7 +127,7 @@ class Todo extends DataClass implements Insertable<Todo> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Todo &&
+      (other is TodoItemData &&
           other.id == this.id &&
           other.title == this.title &&
           other.content == this.content &&
@@ -136,14 +136,14 @@ class Todo extends DataClass implements Insertable<Todo> {
           other.isAllday == this.isAllday);
 }
 
-class TodosCompanion extends UpdateCompanion<Todo> {
+class TodoItemCompanion extends UpdateCompanion<TodoItemData> {
   final Value<int> id;
   final Value<String> title;
   final Value<String> content;
   final Value<DateTime?> startDay;
   final Value<DateTime?> endDay;
   final Value<bool> isAllday;
-  const TodosCompanion({
+  const TodoItemCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.content = const Value.absent(),
@@ -151,7 +151,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     this.endDay = const Value.absent(),
     this.isAllday = const Value.absent(),
   });
-  TodosCompanion.insert({
+  TodoItemCompanion.insert({
     this.id = const Value.absent(),
     required String title,
     this.content = const Value.absent(),
@@ -159,7 +159,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     this.endDay = const Value.absent(),
     this.isAllday = const Value.absent(),
   }) : title = Value(title);
-  static Insertable<Todo> custom({
+  static Insertable<TodoItemData> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String>? content,
@@ -177,14 +177,14 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     });
   }
 
-  TodosCompanion copyWith(
+  TodoItemCompanion copyWith(
       {Value<int>? id,
       Value<String>? title,
       Value<String>? content,
       Value<DateTime?>? startDay,
       Value<DateTime?>? endDay,
       Value<bool>? isAllday}) {
-    return TodosCompanion(
+    return TodoItemCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       content: content ?? this.content,
@@ -220,7 +220,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
 
   @override
   String toString() {
-    return (StringBuffer('TodosCompanion(')
+    return (StringBuffer('TodoItemCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('content: $content, ')
@@ -232,11 +232,12 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   }
 }
 
-class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
+class $TodoItemTable extends TodoItem
+    with TableInfo<$TodoItemTable, TodoItemData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TodosTable(this.attachedDatabase, [this._alias]);
+  $TodoItemTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -282,11 +283,11 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
   List<GeneratedColumn> get $columns =>
       [id, title, content, startDay, endDay, isAllday];
   @override
-  String get aliasedName => _alias ?? 'todos';
+  String get aliasedName => _alias ?? 'todo_item';
   @override
-  String get actualTableName => 'todos';
+  String get actualTableName => 'todo_item';
   @override
-  VerificationContext validateIntegrity(Insertable<Todo> instance,
+  VerificationContext validateIntegrity(Insertable<TodoItemData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -321,22 +322,22 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Todo map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Todo.fromData(data,
+  TodoItemData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return TodoItemData.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $TodosTable createAlias(String alias) {
-    return $TodosTable(attachedDatabase, alias);
+  $TodoItemTable createAlias(String alias) {
+    return $TodoItemTable(attachedDatabase, alias);
   }
 }
 
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  late final $TodosTable todos = $TodosTable(this);
+  late final $TodoItemTable todoItem = $TodoItemTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [todos];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [todoItem];
 }
