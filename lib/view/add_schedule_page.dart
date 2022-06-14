@@ -18,12 +18,12 @@ class AddSchedulePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state=ref.watch(scheduleProvider);
+    final state = ref.watch(scheduleProvider);
     final controller = ref.read(scheduleProvider.notifier);
-
     // final startDay = useState(selectedDay!);
     // final endDay = useState(selectedDay!);
     // final isAllDay = useState(false);
+    bool canSend=state.title=="";
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -43,15 +43,21 @@ class AddSchedulePage extends HookConsumerWidget {
             width: 70,
             height: 20,
             child: ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+
+                if(canSend=true){
+                  
+
+                }
+              },
               style: OutlinedButton.styleFrom(
                   backgroundColor: Colors.grey[300],
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)))),
-              child: const Text(
+              child: Text(
                 "保存",
                 style: TextStyle(
-                  color: Colors.black,
+                  color: (canSend)?Colors.grey:Colors.black,
                 ),
               ),
             ),
@@ -64,9 +70,9 @@ class AddSchedulePage extends HookConsumerWidget {
           margin: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              TitleFormWidget(state: state,controller: controller,),
+              TitleFormWidget(state: state, controller: controller,),
               DateInfoWidget(state: state, controller: controller,),
-              CommentFromWidget(state: state,controller: controller,)
+              CommentFromWidget(state: state, controller: controller,)
             ],
           ),
         ),
