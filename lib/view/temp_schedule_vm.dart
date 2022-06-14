@@ -1,18 +1,18 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../model/schedule_model.dart';
+import '../model/temp_schedule_model.dart';
 
 
 
-final scheduleProvider = StateNotifierProvider<ScheduleController, ScheduleModel>((ref) {
+final scheduleProvider = StateNotifierProvider<ScheduleController, TempScheduleModel>((ref) {
   return ScheduleController();
 });
 
 
 
-class ScheduleController extends StateNotifier<ScheduleModel>{
-  ScheduleController():super( ScheduleModel(startDay: DateTime.now(),endDay: DateTime.now(),title: "",comment: "",isAllDay: false),);
+class ScheduleController extends StateNotifier<TempScheduleModel>{
+  ScheduleController():super( TempScheduleModel(startDay: DateTime.now(),endDay: DateTime.now(),title: "",comment: "",isAllDay: false),);
 
   void updateTitle(String title){
     state=state.copyWith(title:title);
