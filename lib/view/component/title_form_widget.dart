@@ -12,7 +12,7 @@ class TitleFormWidget extends StatelessWidget {
   }) : super(key: key);
 
   final TempTodoItemData state;
-  final ScheduleController controller;
+  final TempTodoController controller;
 
 
   @override

@@ -16,11 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TempTodoItemData {
-  String? get title => throw _privateConstructorUsedError;
-  bool? get isAllDay => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  bool get isAllDay => throw _privateConstructorUsedError;
   DateTime? get startDay => throw _privateConstructorUsedError;
   DateTime? get endDay => throw _privateConstructorUsedError;
-  String? get comment => throw _privateConstructorUsedError;
+  String get comment => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TempTodoItemDataCopyWith<TempTodoItemData> get copyWith =>
@@ -33,11 +33,11 @@ abstract class $TempTodoItemDataCopyWith<$Res> {
           TempTodoItemData value, $Res Function(TempTodoItemData) then) =
       _$TempTodoItemDataCopyWithImpl<$Res>;
   $Res call(
-      {String? title,
-      bool? isAllDay,
+      {String title,
+      bool isAllDay,
       DateTime? startDay,
       DateTime? endDay,
-      String? comment});
+      String comment});
 }
 
 /// @nodoc
@@ -61,11 +61,11 @@ class _$TempTodoItemDataCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       isAllDay: isAllDay == freezed
           ? _value.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       startDay: startDay == freezed
           ? _value.startDay
           : startDay // ignore: cast_nullable_to_non_nullable
@@ -77,7 +77,7 @@ class _$TempTodoItemDataCopyWithImpl<$Res>
       comment: comment == freezed
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -90,11 +90,11 @@ abstract class _$$_TempTodoItemDataCopyWith<$Res>
       __$$_TempTodoItemDataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? title,
-      bool? isAllDay,
+      {String title,
+      bool isAllDay,
       DateTime? startDay,
       DateTime? endDay,
-      String? comment});
+      String comment});
 }
 
 /// @nodoc
@@ -120,11 +120,11 @@ class __$$_TempTodoItemDataCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       isAllDay: isAllDay == freezed
           ? _value.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       startDay: startDay == freezed
           ? _value.startDay
           : startDay // ignore: cast_nullable_to_non_nullable
@@ -136,7 +136,7 @@ class __$$_TempTodoItemDataCopyWithImpl<$Res>
       comment: comment == freezed
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -145,18 +145,18 @@ class __$$_TempTodoItemDataCopyWithImpl<$Res>
 
 class _$_TempTodoItemData implements _TempTodoItemData {
   const _$_TempTodoItemData(
-      {this.title = null,
-      this.isAllDay = null,
+      {this.title = '',
+      this.isAllDay = false,
       this.startDay = null,
       this.endDay = null,
-      this.comment = null});
+      this.comment = ''});
 
   @override
   @JsonKey()
-  final String? title;
+  final String title;
   @override
   @JsonKey()
-  final bool? isAllDay;
+  final bool isAllDay;
   @override
   @JsonKey()
   final DateTime? startDay;
@@ -165,7 +165,7 @@ class _$_TempTodoItemData implements _TempTodoItemData {
   final DateTime? endDay;
   @override
   @JsonKey()
-  final String? comment;
+  final String comment;
 
   @override
   String toString() {
@@ -201,22 +201,22 @@ class _$_TempTodoItemData implements _TempTodoItemData {
 
 abstract class _TempTodoItemData implements TempTodoItemData {
   const factory _TempTodoItemData(
-      {final String? title,
-      final bool? isAllDay,
+      {final String title,
+      final bool isAllDay,
       final DateTime? startDay,
       final DateTime? endDay,
-      final String? comment}) = _$_TempTodoItemData;
+      final String comment}) = _$_TempTodoItemData;
 
   @override
-  String? get title => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
   @override
-  bool? get isAllDay => throw _privateConstructorUsedError;
+  bool get isAllDay => throw _privateConstructorUsedError;
   @override
   DateTime? get startDay => throw _privateConstructorUsedError;
   @override
   DateTime? get endDay => throw _privateConstructorUsedError;
   @override
-  String? get comment => throw _privateConstructorUsedError;
+  String get comment => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_TempTodoItemDataCopyWith<_$_TempTodoItemData> get copyWith =>

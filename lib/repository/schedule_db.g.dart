@@ -10,14 +10,14 @@ part of 'schedule_db.dart';
 class TodoItemData extends DataClass implements Insertable<TodoItemData> {
   final int id;
   final String title;
-  final String content;
+  final String comment;
   final DateTime? startDay;
   final DateTime? endDay;
   final bool isAllday;
   TodoItemData(
       {required this.id,
       required this.title,
-      required this.content,
+      required this.comment,
       this.startDay,
       this.endDay,
       required this.isAllday});
@@ -28,8 +28,8 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       title: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
-      content: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}content'])!,
+      comment: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}comment'])!,
       startDay: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}start_day']),
       endDay: const DateTimeType()
@@ -43,7 +43,7 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
-    map['content'] = Variable<String>(content);
+    map['comment'] = Variable<String>(comment);
     if (!nullToAbsent || startDay != null) {
       map['start_day'] = Variable<DateTime?>(startDay);
     }
@@ -58,7 +58,7 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
     return TodoItemCompanion(
       id: Value(id),
       title: Value(title),
-      content: Value(content),
+      comment: Value(comment),
       startDay: startDay == null && nullToAbsent
           ? const Value.absent()
           : Value(startDay),
@@ -74,7 +74,7 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
     return TodoItemData(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
-      content: serializer.fromJson<String>(json['content']),
+      comment: serializer.fromJson<String>(json['comment']),
       startDay: serializer.fromJson<DateTime?>(json['startDay']),
       endDay: serializer.fromJson<DateTime?>(json['endDay']),
       isAllday: serializer.fromJson<bool>(json['isAllday']),
@@ -86,7 +86,7 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
-      'content': serializer.toJson<String>(content),
+      'comment': serializer.toJson<String>(comment),
       'startDay': serializer.toJson<DateTime?>(startDay),
       'endDay': serializer.toJson<DateTime?>(endDay),
       'isAllday': serializer.toJson<bool>(isAllday),
@@ -96,14 +96,14 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
   TodoItemData copyWith(
           {int? id,
           String? title,
-          String? content,
+          String? comment,
           DateTime? startDay,
           DateTime? endDay,
           bool? isAllday}) =>
       TodoItemData(
         id: id ?? this.id,
         title: title ?? this.title,
-        content: content ?? this.content,
+        comment: comment ?? this.comment,
         startDay: startDay ?? this.startDay,
         endDay: endDay ?? this.endDay,
         isAllday: isAllday ?? this.isAllday,
@@ -113,7 +113,7 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
     return (StringBuffer('TodoItemData(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('content: $content, ')
+          ..write('comment: $comment, ')
           ..write('startDay: $startDay, ')
           ..write('endDay: $endDay, ')
           ..write('isAllday: $isAllday')
@@ -123,14 +123,14 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
 
   @override
   int get hashCode =>
-      Object.hash(id, title, content, startDay, endDay, isAllday);
+      Object.hash(id, title, comment, startDay, endDay, isAllday);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TodoItemData &&
           other.id == this.id &&
           other.title == this.title &&
-          other.content == this.content &&
+          other.comment == this.comment &&
           other.startDay == this.startDay &&
           other.endDay == this.endDay &&
           other.isAllday == this.isAllday);
@@ -139,14 +139,14 @@ class TodoItemData extends DataClass implements Insertable<TodoItemData> {
 class TodoItemCompanion extends UpdateCompanion<TodoItemData> {
   final Value<int> id;
   final Value<String> title;
-  final Value<String> content;
+  final Value<String> comment;
   final Value<DateTime?> startDay;
   final Value<DateTime?> endDay;
   final Value<bool> isAllday;
   const TodoItemCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
-    this.content = const Value.absent(),
+    this.comment = const Value.absent(),
     this.startDay = const Value.absent(),
     this.endDay = const Value.absent(),
     this.isAllday = const Value.absent(),
@@ -154,7 +154,7 @@ class TodoItemCompanion extends UpdateCompanion<TodoItemData> {
   TodoItemCompanion.insert({
     this.id = const Value.absent(),
     required String title,
-    this.content = const Value.absent(),
+    this.comment = const Value.absent(),
     this.startDay = const Value.absent(),
     this.endDay = const Value.absent(),
     this.isAllday = const Value.absent(),
@@ -162,7 +162,7 @@ class TodoItemCompanion extends UpdateCompanion<TodoItemData> {
   static Insertable<TodoItemData> custom({
     Expression<int>? id,
     Expression<String>? title,
-    Expression<String>? content,
+    Expression<String>? comment,
     Expression<DateTime?>? startDay,
     Expression<DateTime?>? endDay,
     Expression<bool>? isAllday,
@@ -170,7 +170,7 @@ class TodoItemCompanion extends UpdateCompanion<TodoItemData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
-      if (content != null) 'content': content,
+      if (comment != null) 'comment': comment,
       if (startDay != null) 'start_day': startDay,
       if (endDay != null) 'end_day': endDay,
       if (isAllday != null) 'is_allday': isAllday,
@@ -180,14 +180,14 @@ class TodoItemCompanion extends UpdateCompanion<TodoItemData> {
   TodoItemCompanion copyWith(
       {Value<int>? id,
       Value<String>? title,
-      Value<String>? content,
+      Value<String>? comment,
       Value<DateTime?>? startDay,
       Value<DateTime?>? endDay,
       Value<bool>? isAllday}) {
     return TodoItemCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
-      content: content ?? this.content,
+      comment: comment ?? this.comment,
       startDay: startDay ?? this.startDay,
       endDay: endDay ?? this.endDay,
       isAllday: isAllday ?? this.isAllday,
@@ -203,8 +203,8 @@ class TodoItemCompanion extends UpdateCompanion<TodoItemData> {
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
-    if (content.present) {
-      map['content'] = Variable<String>(content.value);
+    if (comment.present) {
+      map['comment'] = Variable<String>(comment.value);
     }
     if (startDay.present) {
       map['start_day'] = Variable<DateTime?>(startDay.value);
@@ -223,7 +223,7 @@ class TodoItemCompanion extends UpdateCompanion<TodoItemData> {
     return (StringBuffer('TodoItemCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('content: $content, ')
+          ..write('comment: $comment, ')
           ..write('startDay: $startDay, ')
           ..write('endDay: $endDay, ')
           ..write('isAllday: $isAllday')
@@ -254,10 +254,10 @@ class $TodoItemTable extends TodoItem
           ),
           type: const StringType(),
           requiredDuringInsert: true);
-  final VerificationMeta _contentMeta = const VerificationMeta('content');
+  final VerificationMeta _commentMeta = const VerificationMeta('comment');
   @override
-  late final GeneratedColumn<String?> content = GeneratedColumn<String?>(
-      'content', aliasedName, false,
+  late final GeneratedColumn<String?> comment = GeneratedColumn<String?>(
+      'comment', aliasedName, false,
       type: const StringType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
@@ -281,7 +281,7 @@ class $TodoItemTable extends TodoItem
       defaultValue: const Constant(true));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, title, content, startDay, endDay, isAllday];
+      [id, title, comment, startDay, endDay, isAllday];
   @override
   String get aliasedName => _alias ?? 'todo_item';
   @override
@@ -300,9 +300,9 @@ class $TodoItemTable extends TodoItem
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
-    if (data.containsKey('content')) {
-      context.handle(_contentMeta,
-          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
+    if (data.containsKey('comment')) {
+      context.handle(_commentMeta,
+          comment.isAcceptableOrUnknown(data['comment']!, _commentMeta));
     }
     if (data.containsKey('start_day')) {
       context.handle(_startDayMeta,

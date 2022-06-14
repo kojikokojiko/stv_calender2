@@ -7,10 +7,10 @@ part 'temp_schedule_model.freezed.dart';
 @freezed
 class TempTodoItemData with _$TempTodoItemData {
   const factory TempTodoItemData({
-    @Default(null) String? title,
-    @Default(null)bool? isAllDay ,
+    @Default('') String title,
+    @Default(false)bool isAllDay ,
     @Default(null) DateTime? startDay,
     @Default(null) DateTime? endDay,
-    @Default(null) String? comment,
+    @Default('') String comment,
   }) = _TempTodoItemData;
 }

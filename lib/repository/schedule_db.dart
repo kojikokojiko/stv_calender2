@@ -14,7 +14,7 @@ class TodoItem extends Table {
 
   TextColumn get title => text().withLength(min: 1)();
 
-  TextColumn get content => text().withDefault(const Constant(''))();
+  TextColumn get comment => text().withDefault(const Constant(''))();
 
   DateTimeColumn get startDay => dateTime().nullable()();
 
@@ -70,38 +70,23 @@ class MyDatabase extends _$MyDatabase {
   //   }
   // }
   //8
-  //以下追記
-  Future<List<TodoItemData>> get allTodoEntries => select(todoItem).get();
+  //全てのデータ取得
+  Future<List<TodoItemData>> readAllTodoData() => select(todoItem).get();
+  //SELECT * FROM ToDoItemTable
 
   // Stream<Todo> todoById(int id) {
   //   return (select(todos)..where((t) => t.id.equals(id))).watchSingle();
   // }
 
-  Future<int> addTodo(String title, String content, DateTime startDate,
-      DateTime endDate, bool isAllday, bool isNotify) {
-    return into(todoItem).insert(TodoItemCompanion(
-      title: Value(title),
-      content: Value(content),
-      startDay: Value(startDate),
-      endDay: Value(endDate),
-      isAllday: Value(isAllday),
-    ));
+  Future writeTodo(TodoItemCompanion data) {
+    return into(todoItem).insert(data);
   }
 
-  Future<int> updateTodo(TodoItemData todo, String title, String content,
-      DateTime startDate, DateTime endDate, bool isAllday, isNotify) {
-    return (update(todoItem)..where((tbl) => tbl.id.equals(todo.id))).write(
-      TodoItemCompanion(
-        title: Value(title),
-        content: Value(content),
-        startDay: Value(startDate),
-        endDay: Value(endDate),
-        isAllday: Value(isAllday),
-      ),
-    );
+  Future updateTodo(TodoItemData data) {
+    return update(todoItem).replace(data);
   }
 
-  Future<void> deleteTodo(TodoItemData todo) {
-    return (delete(todoItem)..where((tbl) => tbl.id.equals(todo.id))).go();
+  Future deleteTodo(int id) {
+    return (delete(todoItem)..where((tbl) => tbl.id.equals(id))).go();
   }
 }

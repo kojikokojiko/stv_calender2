@@ -18,12 +18,12 @@ class AddSchedulePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(scheduleProvider);
-    final controller = ref.read(scheduleProvider.notifier);
+    final tempTodoState = ref.watch(tempTodoProvider);
+    final tempTodoController = ref.read(tempTodoProvider.notifier);
     // final startDay = useState(selectedDay!);
     // final endDay = useState(selectedDay!);
     // final isAllDay = useState(false);
-    bool canSend=state.title=="";
+    bool canSend=tempTodoState.title=="";
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -70,9 +70,9 @@ class AddSchedulePage extends HookConsumerWidget {
           margin: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              TitleFormWidget(state: state, controller: controller,),
-              DateInfoWidget(state: state, controller: controller,),
-              CommentFromWidget(state: state, controller: controller,)
+              TitleFormWidget(state: tempTodoState, controller: tempTodoController,),
+              DateInfoWidget(state: tempTodoState, controller: tempTodoController,),
+              CommentFromWidget(state: tempTodoState, controller: tempTodoController,)
             ],
           ),
         ),

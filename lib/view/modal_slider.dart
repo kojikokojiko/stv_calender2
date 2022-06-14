@@ -33,7 +33,7 @@ class ModalSlider extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context,WidgetRef ref) {
-    final controller=ref.read(scheduleProvider.notifier);
+    final controller=ref.read(tempTodoProvider.notifier);
 
     setDayList(diffDay, day);
     print(dayList);
