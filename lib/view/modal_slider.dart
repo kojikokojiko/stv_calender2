@@ -8,9 +8,10 @@ import 'package:stv_calender2/view/schedule_db_controller.dart';
 import 'package:stv_calender2/view/temp_schedule_vm.dart';
 
 import 'add_schedule_page.dart';
+import 'component/schedule_card.dart';
 
 class ModalSlider extends HookConsumerWidget {
-  ModalSlider({required this.day});
+  ModalSlider({Key? key, required this.day}) : super(key: key);
 
   final DateTime day;
   final diffDay = 3;
@@ -32,12 +33,10 @@ class ModalSlider extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tempTodoState = ref.watch(tempTodoProvider);
+
     final tempTodoController = ref.read(tempTodoProvider.notifier);
-    final todoDataBaseState = ref.watch(todoDatabaseProvider);
     final todoDataBaseController = ref.read(todoDatabaseProvider.notifier);
     setDayList(diffDay, day);
-    print(dayList);
     return CarouselSlider(
       options: CarouselOptions(
         aspectRatio: 2.0,
@@ -74,8 +73,6 @@ class ModalSlider extends HookConsumerWidget {
                               tempTodoController.updateStartDate(selectingDay);
                               tempTodoController.updateEndDate(selectingDay);
 
-                              print(selectingDay);
-                              // print(ref.watch(startTimeProvider));
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -97,15 +94,14 @@ class ModalSlider extends HookConsumerWidget {
                             return const Center(
                                 child: CircularProgressIndicator());
                           }
-                          return (snapshot.data!.length == 0)
-                              ? Center(child: Text("予定がありません"))
+                          return (snapshot.data!.isEmpty)
+                              ? const Center(child: Text("予定がありません"))
                               : ListView.builder(
                                   //11
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) => ScheduleCard(
                                     snapshot: snapshot,
                                     index: index,
-                                    selecting_day: selectingDay,
                                   ),
                                 );
                         },
