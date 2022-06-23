@@ -19,7 +19,7 @@ class CommentFromWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(state.comment!),
+        Text(state.comment),
         Container(
           margin: const EdgeInsets.only(top: 10, bottom: 10),
           decoration: BoxDecoration(

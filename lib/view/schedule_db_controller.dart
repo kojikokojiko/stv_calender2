@@ -6,6 +6,15 @@ import 'package:stv_calender2/model/schedule_state_data.dart';
 import '../model/temp_schedule_model.dart';
 import '../repository/schedule_db.dart';
 
+
+final todoDatabaseProvider = StateNotifierProvider<TodoDatabaseNotifier,TodoStateData>((_) {
+  TodoDatabaseNotifier notify = TodoDatabaseNotifier();
+  notify.readData();
+  //初期化処理
+  return notify;
+});
+
+
 class TodoDatabaseNotifier extends StateNotifier<TodoStateData> {
   TodoDatabaseNotifier() : super(TodoStateData());
 
@@ -14,8 +23,8 @@ class TodoDatabaseNotifier extends StateNotifier<TodoStateData> {
 
 
   // 書き込み処理
-  void writeData(TempTodoItemData data) async {
-    if (data.title!.isEmpty) {
+  writeData(TempTodoItemData data) async {
+    if (data.title.isEmpty) {
       return;
     }
     TodoItemCompanion entry = TodoItemCompanion(
@@ -30,7 +39,7 @@ class TodoDatabaseNotifier extends StateNotifier<TodoStateData> {
     readData();
   }
 
-  void deleteData(TodoItemData data)async{
+  deleteData(TodoItemData data)async{
     state = state.copyWith(isLoading: true);
     await _db.deleteTodo(data.id);
     readData();
@@ -38,7 +47,7 @@ class TodoDatabaseNotifier extends StateNotifier<TodoStateData> {
 
 
   //更新処理部分
-  void updateData(TodoItemData data) async {
+  updateData(TodoItemData data) async {
     if (data.title.isEmpty) {
       return;
     }
@@ -47,6 +56,8 @@ class TodoDatabaseNotifier extends StateNotifier<TodoStateData> {
     readData();
     //更新するたびにデータベースを読み込む
   }
+
+
 
   //データ読み込み処理
   readData() async {
@@ -60,6 +71,14 @@ class TodoDatabaseNotifier extends StateNotifier<TodoStateData> {
       todoItems: todoItems,
     );
   }
+
+  Stream<List<TodoItemData>> readSameDayData(selectday){
+    final todoItems =  _db.watchSamedayEntries(selectday);
+    return todoItems;
+  }
+
+
+
 
 }
 

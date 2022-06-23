@@ -37,7 +37,7 @@ class DateInfoWidget extends StatelessWidget {
                 const Text("終日"),
                 Switch(
                   // value: isAllDay.value,
-                  value:state.isAllDay!,
+                  value:state.isAllDay,
                   onChanged: (e) {
                     // isAllDay.value = e;
                     controller.updateIsAllDay(e);
@@ -131,7 +131,7 @@ class DateInfoWidget extends StatelessWidget {
                                         // ref.read(scheduleEndTimeProvider.state).update((state) => value);
                                       },
 
-                                      mode: state.isAllDay!
+                                      mode: state.isAllDay
                                           ? CupertinoDatePickerMode
                                           .date
                                           : CupertinoDatePickerMode
@@ -148,7 +148,7 @@ class DateInfoWidget extends StatelessWidget {
                   },
 
                   child: Text(
-                    state.isAllDay! ? DateFormat("yyyy-MM-dd").format(
+                    state.isAllDay ? DateFormat("yyyy-MM-dd").format(
                         state.startDay!) : DateFormat(
                         "yyyy-MM-dd HH:mm").format(state.startDay!),
                     style: const TextStyle(color: Colors.black),
@@ -243,7 +243,7 @@ class DateInfoWidget extends StatelessWidget {
                                         // ref.read(scheduleEndTimeProvider.state).update((state) => value);
                                       },
 
-                                      mode: state.isAllDay!
+                                      mode: state.isAllDay
                                           ? CupertinoDatePickerMode
                                           .date
                                           : CupertinoDatePickerMode
@@ -260,7 +260,7 @@ class DateInfoWidget extends StatelessWidget {
                     );
                   },
                   child: Text(
-                    state.isAllDay! ? DateFormat("yyyy-MM-dd").format(
+                    state.isAllDay ? DateFormat("yyyy-MM-dd").format(
                         state.endDay!) : DateFormat(
                         "yyyy-MM-dd HH:mm").format(state.endDay!),
                     style: const TextStyle(color: Colors.black),

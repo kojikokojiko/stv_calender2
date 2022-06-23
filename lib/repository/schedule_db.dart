@@ -33,7 +33,7 @@ LazyDatabase _openConnection() {
     final dbFolder = await getApplicationDocumentsDirectory();
     //Path to a directory where the application may place data that is user-generated, or that cannot otherwise be recreated by your application.
     //データを配置することができるディレクトリのパス。
-    final file = File(p.join(dbFolder.path, 'db3.sqlite'));
+    final file = File(p.join(dbFolder.path, 'db.sqlite'));
     return NativeDatabase(file);
   });
 }

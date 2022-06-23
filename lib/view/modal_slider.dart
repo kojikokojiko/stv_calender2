@@ -3,12 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:stv_calender2/repository/schedule_db.dart';
+import 'package:stv_calender2/view/schedule_db_controller.dart';
 import 'package:stv_calender2/view/temp_schedule_vm.dart';
 
 import 'add_schedule_page.dart';
-
-
-
 
 class ModalSlider extends HookConsumerWidget {
   ModalSlider({required this.day});
@@ -32,9 +31,11 @@ class ModalSlider extends HookConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
-    final controller=ref.read(tempTodoProvider.notifier);
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tempTodoState = ref.watch(tempTodoProvider);
+    final tempTodoController = ref.read(tempTodoProvider.notifier);
+    final todoDataBaseState = ref.watch(todoDatabaseProvider);
+    final todoDataBaseController = ref.read(todoDatabaseProvider.notifier);
     setDayList(diffDay, day);
     print(dayList);
     return CarouselSlider(
@@ -70,8 +71,8 @@ class ModalSlider extends HookConsumerWidget {
                         TextButton(
                             child: const Icon(Icons.add),
                             onPressed: () {
-                              controller.updateStartDate(selectingDay);
-                              controller.updateEndDate(selectingDay);
+                              tempTodoController.updateStartDate(selectingDay);
+                              tempTodoController.updateEndDate(selectingDay);
 
                               print(selectingDay);
                               // print(ref.watch(startTimeProvider));
@@ -86,31 +87,30 @@ class ModalSlider extends HookConsumerWidget {
                             }),
                       ],
                     ),
-                    // Expanded(
-                      //10
-                      //以下、Container()をStreamBuilder(...)に置き換え
-                      // child: // StreamBuilder(
-                      // //   stream: database.watchSamedayEntries(selecting_day),
-                      // //   builder: (BuildContext context,
-                      // //       AsyncSnapshot<List<Todo>> snapshot) {
-                      // //     if (snapshot.connectionState ==
-                      // //         ConnectionState.waiting) {
-                      // //       return const Center(
-                      // //           child: CircularProgressIndicator());
-                      // //     }
-                      // //     return (snapshot.data!.length == 0)
-                      // //         ? Center(child: Text("予定がありません"))
-                      // //         : ListView.builder(
-                      // //             //11
-                      // //             itemCount: snapshot.data!.length,
-                      // //             itemBuilder: (context, index) => ScheduleCard(
-                      // //                   snapshot: snapshot,
-                      // //                   index: index,
-                      // //                   selecting_day: selecting_day,
-                      // //                 ));
-                      // //   },
-                      // // ),
-                    // ),
+                    Expanded(
+                      child: StreamBuilder(
+                        stream: todoDataBaseController.readSameDayData(selectingDay),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<TodoItemData>> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          return (snapshot.data!.length == 0)
+                              ? Center(child: Text("予定がありません"))
+                              : ListView.builder(
+                                  //11
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) => ScheduleCard(
+                                    snapshot: snapshot,
+                                    index: index,
+                                    selecting_day: selectingDay,
+                                  ),
+                                );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

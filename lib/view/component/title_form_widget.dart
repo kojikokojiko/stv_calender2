@@ -19,7 +19,7 @@ class TitleFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(state.title!),
+        Text(state.title),
         TextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
