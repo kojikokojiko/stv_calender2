@@ -1,25 +1,25 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/temp_schedule_model.dart';
 import '../temp_schedule_vm.dart';
 
-class CommentFromWidget extends StatelessWidget {
+class CommentFromWidget extends ConsumerWidget {
   const CommentFromWidget({
     Key? key,
-    required this.state,
-    required this.controller,
+
   }) : super(key: key);
 
 
-  final TempTodoItemData state;
-  final TempTodoController controller;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref ) {
+    final tempTodoController = ref.read(tempTodoProvider.notifier);
+    final tempTodoState = ref.watch(tempTodoProvider);
     return Column(
       children: [
-        Text(state.comment),
+
         Container(
           margin: const EdgeInsets.only(top: 10, bottom: 10),
           decoration: BoxDecoration(
@@ -36,13 +36,13 @@ class CommentFromWidget extends StatelessWidget {
               return null;
             },
             autovalidateMode:AutovalidateMode.always ,
-            initialValue:"",
+            initialValue: tempTodoState.comment,
             // (isEditing!)? todo!.content:"",
             onChanged: (value){
-              controller.updateComment(value);
+              tempTodoController.updateComment(value);
             },
             onSaved: (value){
-              controller.updateComment(value!);
+              tempTodoController.updateComment(value!);
               // ref.read(contentProvider.state).update((state) => value!);
             },
             // デフォルトで表示される青い下線を削除

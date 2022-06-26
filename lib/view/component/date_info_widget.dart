@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/temp_schedule_model.dart';
 import '../temp_schedule_vm.dart';
 
-class DateInfoWidget extends StatelessWidget {
+class DateInfoWidget extends ConsumerWidget {
   const DateInfoWidget({
     Key? key,
-    required this.state,
-    required this.controller,
   }) : super(key: key);
 
-  final TempTodoItemData state;
-  final TempTodoController controller;
+
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final tempTodoController = ref.read(tempTodoProvider.notifier);
+    final tempTodoState = ref.watch(tempTodoProvider);
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       decoration: BoxDecoration(
@@ -37,10 +37,10 @@ class DateInfoWidget extends StatelessWidget {
                 const Text("終日"),
                 Switch(
                   // value: isAllDay.value,
-                  value:state.isAllDay,
+                  value:tempTodoState.isAllDay,
                   onChanged: (e) {
                     // isAllDay.value = e;
-                    controller.updateIsAllDay(e);
+                    tempTodoController.updateIsAllDay(e);
                   },
                 ),
               ],
@@ -59,7 +59,7 @@ class DateInfoWidget extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         // DateTime tempDay=startDay.value;
-                        DateTime tempDay=state.startDay!;
+                        DateTime tempDay=tempTodoState.startDay!;
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -90,7 +90,20 @@ class DateInfoWidget extends StatelessWidget {
                                     onPressed: () {
                                       // 変更
                                       // startDay.value=tempDay;
-                                      controller.updateStartDate(tempDay);
+                                      tempTodoController.updateStartDate(tempDay);
+
+                                      if(tempTodoState.isAllDay){
+                                        if(tempDay.isAfter(tempTodoState.endDay!)){
+                                          // 開始時間が終了時間を越してるので、終了時間を+1日スル。
+                                          tempTodoController.updateEndDate(tempDay.add(const Duration(days: 1)));
+                                        }
+                                      }else{
+                                        if(tempDay.isAfter(tempTodoState.endDay!)){
+                                          // 開始時間が終了時間を越してるので、終了時間を+1日スル。
+                                          tempTodoController.updateEndDate(tempDay.add(const Duration(hours: 1)));
+                                        }
+                                      }
+
                                       Navigator.of(context).pop();
                                     },
                                     padding:
@@ -124,14 +137,14 @@ class DateInfoWidget extends StatelessWidget {
                                     child: CupertinoDatePicker(
                                       use24hFormat: true,
                                       minuteInterval: 15,
-                                      initialDateTime: state.startDay!,
+                                      initialDateTime: tempTodoState.startDay!,
                                       onDateTimeChanged: (
                                           value) {
                                         tempDay = value;
                                         // ref.read(scheduleEndTimeProvider.state).update((state) => value);
                                       },
 
-                                      mode: state.isAllDay
+                                      mode: tempTodoState.isAllDay
                                           ? CupertinoDatePickerMode
                                           .date
                                           : CupertinoDatePickerMode
@@ -148,9 +161,9 @@ class DateInfoWidget extends StatelessWidget {
                   },
 
                   child: Text(
-                    state.isAllDay ? DateFormat("yyyy-MM-dd").format(
-                        state.startDay!) : DateFormat(
-                        "yyyy-MM-dd HH:mm").format(state.startDay!),
+                    tempTodoState.isAllDay ? DateFormat("yyyy-MM-dd").format(
+                        tempTodoState.startDay!) : DateFormat(
+                        "yyyy-MM-dd HH:mm").format(tempTodoState.startDay!),
                     style: const TextStyle(color: Colors.black),
                   ),
                 )
@@ -170,7 +183,7 @@ class DateInfoWidget extends StatelessWidget {
                     showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) {
-                        DateTime tempDay=state.endDay!;
+                        DateTime tempDay=tempTodoState.endDay!;
                         // _endDay
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -202,7 +215,25 @@ class DateInfoWidget extends StatelessWidget {
                                     onPressed: () {
                                       // 変更
                                       // endDay.value=tempDay;
-                                      controller.updateEndDate(tempDay);
+                                      tempTodoController.updateEndDate(tempDay);
+
+
+                                      if(tempTodoState.isAllDay){
+                                        if(tempDay.isBefore(tempTodoState.startDay!)){
+                                          // 開始時間が終了時間を越してるので、終了時間を+1日スル。
+                                          tempTodoController.updateStartDate(tempDay.add(const Duration(days: -1)));
+                                        }
+                                      }else{
+                                        if(tempDay.isBefore(tempTodoState.startDay!)){
+                                          // 開始時間が終了時間を越してるので、終了時間を+1日スル。
+                                          tempTodoController.updateStartDate(tempDay.add(const Duration(hours: -1)));
+                                        }
+                                      }
+
+
+
+
+
                                       Navigator.of(context).pop();
                                     },
                                     padding:
@@ -236,14 +267,14 @@ class DateInfoWidget extends StatelessWidget {
                                     child: CupertinoDatePicker(
                                       use24hFormat: true,
                                       minuteInterval: 15,
-                                      initialDateTime: state.endDay!,
+                                      initialDateTime: tempTodoState.endDay!,
                                       onDateTimeChanged: (
                                           value) {
                                         tempDay = value;
                                         // ref.read(scheduleEndTimeProvider.state).update((state) => value);
                                       },
 
-                                      mode: state.isAllDay
+                                      mode: tempTodoState.isAllDay
                                           ? CupertinoDatePickerMode
                                           .date
                                           : CupertinoDatePickerMode
@@ -260,9 +291,9 @@ class DateInfoWidget extends StatelessWidget {
                     );
                   },
                   child: Text(
-                    state.isAllDay ? DateFormat("yyyy-MM-dd").format(
-                        state.endDay!) : DateFormat(
-                        "yyyy-MM-dd HH:mm").format(state.endDay!),
+                    tempTodoState.isAllDay ? DateFormat("yyyy-MM-dd").format(
+                        tempTodoState.endDay!) : DateFormat(
+                        "yyyy-MM-dd HH:mm").format(tempTodoState.endDay!),
                     style: const TextStyle(color: Colors.black),
                   ),
                 ),

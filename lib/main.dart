@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     // 初期化のためのメソッドを追加
     // initializeDateFormatting('ja');
     //
-    return const MaterialApp(
+    return  MaterialApp(
 
       localizationsDelegates: [
         GlobalWidgetsLocalizations.delegate,

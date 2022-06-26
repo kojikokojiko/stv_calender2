@@ -1,6 +1,7 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stv_calender2/repository/schedule_db.dart';
 import 'package:stv_calender2/view/schedule_db_controller.dart';
 import 'package:stv_calender2/view/temp_schedule_vm.dart';
 
@@ -11,8 +12,11 @@ import 'component/title_form_widget.dart';
 class AddSchedulePage extends HookConsumerWidget {
   // const AddSchedulePage({Key? key}) : super(key: key);
 
-  AddSchedulePage({Key? key, this.selectedDay}) : super(key: key);
-  DateTime? selectedDay;
+  AddSchedulePage({Key? key, required this.isEditing, this.todo})
+      : super(key: key);
+  final isEditing;
+  final todo;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tempTodoState = ref.watch(tempTodoProvider);
@@ -23,7 +27,7 @@ class AddSchedulePage extends HookConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("予定の追加"),
+        title: isEditing ? const Text("予定の編集") : const Text("予定の追加"),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.clear),
@@ -41,8 +45,15 @@ class AddSchedulePage extends HookConsumerWidget {
             child: ElevatedButton(
               onPressed: () async {
                 if (canSend = true) {
-                  todoDataBaseController.writeData(tempTodoState);
-                  Navigator.pop(context);
+                  if (isEditing==false) {
+                    todoDataBaseController.writeData(tempTodoState);
+                    Navigator.pop(context);
+                  } else {
+                    todoDataBaseController.updateData(
+                        todo, tempTodoState.title, tempTodoState.isAllDay, tempTodoState.startDay, tempTodoState.endDay, tempTodoState.comment);
+                    // todoDataBaseController.deleteData(todo);
+                    Navigator.pop(context);
+                  }
                 }
               },
               style: OutlinedButton.styleFrom(
@@ -69,18 +80,29 @@ class AddSchedulePage extends HookConsumerWidget {
           margin: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              TitleFormWidget(
-                state: tempTodoState,
-                controller: tempTodoController,
-              ),
-              DateInfoWidget(
-                state: tempTodoState,
-                controller: tempTodoController,
-              ),
-              CommentFromWidget(
-                state: tempTodoState,
-                controller: tempTodoController,
-              ),
+              TitleFormWidget(),
+              DateInfoWidget(),
+              CommentFromWidget(),
+              Visibility(
+                visible: isEditing,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: TextButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      minimumSize: const Size.fromHeight(50), // NEW
+                    ),
+                    onPressed: () {
+                      todoDataBaseController.deleteData(todo);
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'この予定を削除',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ),
+              )
               // ListView(children: tiles,)
             ],
           ),

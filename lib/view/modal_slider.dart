@@ -14,7 +14,7 @@ class ModalSlider extends HookConsumerWidget {
   ModalSlider({Key? key, required this.day}) : super(key: key);
 
   final DateTime day;
-  final diffDay = 3;
+  final diffDay = 8;
 
   List<DateTime> dayList = [];
 
@@ -33,7 +33,6 @@ class ModalSlider extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final tempTodoController = ref.read(tempTodoProvider.notifier);
     final todoDataBaseController = ref.read(todoDatabaseProvider.notifier);
     setDayList(diffDay, day);
@@ -70,15 +69,16 @@ class ModalSlider extends HookConsumerWidget {
                         TextButton(
                             child: const Icon(Icons.add),
                             onPressed: () {
-                              tempTodoController.updateStartDate(selectingDay);
-                              tempTodoController.updateEndDate(selectingDay);
+                              // tempTodoController.updateStartDate(selectingDay);
+                              // tempTodoController.updateEndDate(selectingDay);
+                              //
 
+                              tempTodoController.updateAll(
+                                  "", false, selectingDay, selectingDay, "");
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddSchedulePage(
-                                    selectedDay: selectingDay,
-                                  ),
+                                  builder: (context) => AddSchedulePage(isEditing: false,),
                                 ),
                               );
                             }),
@@ -86,7 +86,8 @@ class ModalSlider extends HookConsumerWidget {
                     ),
                     Expanded(
                       child: StreamBuilder(
-                        stream: todoDataBaseController.readSameDayData(selectingDay),
+                        stream: todoDataBaseController
+                            .readSameDayData(selectingDay),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<TodoItemData>> snapshot) {
                           if (snapshot.connectionState ==

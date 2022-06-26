@@ -1,25 +1,23 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/temp_schedule_model.dart';
 import '../temp_schedule_vm.dart';
 
-class TitleFormWidget extends StatelessWidget {
+class TitleFormWidget extends ConsumerWidget {
   const TitleFormWidget({
     Key? key,
-    required this.state,
-    required this.controller,
   }) : super(key: key);
 
-  final TempTodoItemData state;
-  final TempTodoController controller;
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final tempTodoController = ref.read(tempTodoProvider.notifier);
+    final tempTodoState = ref.watch(tempTodoProvider);
     return Column(
       children: [
-        Text(state.title),
         TextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -28,7 +26,7 @@ class TitleFormWidget extends StatelessWidget {
             return null;
           },
           // autovalidateMode:AutovalidateMode.always ,
-          // initialValue: (isEditing!)? todo!.title:"",
+          initialValue: tempTodoState.title,
           decoration: const InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -36,10 +34,10 @@ class TitleFormWidget extends StatelessWidget {
             hintText: "タイトル",
           ),
           onChanged: (value) {
-            controller.updateTitle(value);
+            tempTodoController.updateTitle(value);
           },
           onSaved: (value) {
-            controller.updateTitle(value!);
+            tempTodoController.updateTitle(value!);
           },
         ),
       ],

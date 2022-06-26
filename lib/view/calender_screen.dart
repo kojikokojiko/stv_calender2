@@ -1,14 +1,18 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:stv_calender2/view/schedule_db_controller.dart';
+import 'package:stv_calender2/view/temp_schedule_vm.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'modal_slider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class CalenderScreen extends HookConsumerWidget {
-  const CalenderScreen({Key? key}) : super(key: key);
+  CalenderScreen({Key? key}) : super(key: key);
 
   Color _textColor(DateTime day) {
     const defaultTextColor = Colors.black87;
@@ -22,11 +26,35 @@ class CalenderScreen extends HookConsumerWidget {
     return defaultTextColor;
   }
 
+  int getHashCode(DateTime key) {
+    return key.day * 1000000 + key.month * 10000 + key.year;
+  }
 
+  DateTime now=DateTime.now();
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
-
+  Widget build(BuildContext context, WidgetRef ref) {
     final _focusedDay = useState(DateTime.now());
+    // final todoDataBaseController = ref.read(todoDatabaseProvider.notifier);
+    final todos = ref.watch(todoDatabaseProvider).todoItems;
+
+    Map<DateTime, List> _eventsList = {};
+    for (var item in todos) {
+      DateTime date = DateTime(
+          item.startDay!.year, item.startDay!.month, item.startDay!.day);
+      if (_eventsList.containsKey(date)) {
+        _eventsList[date]!.add(item);
+      } else {
+        _eventsList[date] = [item];
+      }
+    }
+    final _events = LinkedHashMap<DateTime, List>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(_eventsList);
+
+    List getEventForDay(DateTime day) {
+      return _events[day] ?? [];
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -37,8 +65,10 @@ class CalenderScreen extends HookConsumerWidget {
         children: [
           TableCalendar(
             focusedDay: _focusedDay.value,
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
+            firstDay: DateTime(now.year-2,),
+          // DateTime.utc(2020, 1, 1),
+            lastDay: DateTime(now.year+2,  ),
+            eventLoader: getEventForDay,
             daysOfWeekStyle: const DaysOfWeekStyle(
               decoration: BoxDecoration(
                 color: Colors.black12,
@@ -57,9 +87,7 @@ class CalenderScreen extends HookConsumerWidget {
                 disabledTextStyle: TextStyle(color: Color(0xFFDCDCDC))),
             startingDayOfWeek: StartingDayOfWeek.monday,
             onDaySelected: (selectedDay, focusedDay) {
-              _focusedDay.value=focusedDay;
-
-
+              _focusedDay.value = focusedDay;
 
               showModalBottomSheet(
                 isScrollControlled: true,
@@ -90,9 +118,7 @@ class CalenderScreen extends HookConsumerWidget {
                         side: const BorderSide(color: Colors.black12),
                       ),
                       onPressed: () {
-                        _focusedDay.value=DateTime.now();
-
-
+                        _focusedDay.value = DateTime.now();
                       },
                       child: const Text(
                         "今日",
@@ -105,12 +131,14 @@ class CalenderScreen extends HookConsumerWidget {
                       style: const TextStyle(fontSize: 20),
                     ),
                     TextButton(
-                      onPressed: () async{
-                        var selctedDate=await showMonthPicker(context: context, initialDate: day,firstDate:DateTime(DateTime.now().year - 1) ,lastDate: DateTime(DateTime.now().year +1));
+                      onPressed: () async {
+                        var selctedDate = await showMonthPicker(
+                            context: context,
+                            initialDate: day,
+                            firstDate: DateTime(DateTime.now().year - 2),
+                            lastDate: DateTime(DateTime.now().year + 2));
                         if (selctedDate == null) return;
-                        _focusedDay.value=selctedDate;
-
-
+                        _focusedDay.value = selctedDate;
                       },
                       child: const Icon(Icons.arrow_drop_down_sharp),
                     )

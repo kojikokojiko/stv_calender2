@@ -82,8 +82,16 @@ class MyDatabase extends _$MyDatabase {
     return into(todoItem).insert(data);
   }
 
-  Future updateTodo(TodoItemData data) {
-    return update(todoItem).replace(data);
+  Future updateTodo(TodoItemData data,String title ,bool isAllday,DateTime startDay,DateTime endDay,String comment) {
+    return (update(todoItem)..where((tbl) => tbl.id.equals(data.id))).write(
+      TodoItemCompanion(
+        title: Value(title),
+        isAllday: Value(isAllday),
+        startDay: Value(startDay),
+        endDay: Value(endDay),
+        comment: Value(comment),
+      ),
+    );
   }
 
   Future deleteTodo(int id) {
