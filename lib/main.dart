@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:stv_calender2/view/calender_screen.dart';
 void main() {
 
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
     // 初期化のためのメソッドを追加
     // initializeDateFormatting('ja');
     //
-    return const MaterialApp(
+    return  MaterialApp(
 
       localizationsDelegates: [
         GlobalWidgetsLocalizations.delegate,

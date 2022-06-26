@@ -1,15 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:stv_calender2/repository/schedule_db.dart';
+import 'package:stv_calender2/view/schedule_db_controller.dart';
+import 'package:stv_calender2/view/temp_schedule_vm.dart';
 
 import 'add_schedule_page.dart';
+import 'component/schedule_card.dart';
 
-class ModalSlider extends StatelessWidget {
-  ModalSlider({required this.day});
+class ModalSlider extends HookConsumerWidget {
+  ModalSlider({Key? key, required this.day}) : super(key: key);
 
   final DateTime day;
-  final diffDay = 3;
+  final diffDay = 8;
 
   List<DateTime> dayList = [];
 
@@ -27,10 +32,10 @@ class ModalSlider extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tempTodoController = ref.read(tempTodoProvider.notifier);
+    final todoDataBaseController = ref.read(todoDatabaseProvider.notifier);
     setDayList(diffDay, day);
-    print(dayList);
     return CarouselSlider(
       options: CarouselOptions(
         aspectRatio: 2.0,
@@ -64,45 +69,45 @@ class ModalSlider extends StatelessWidget {
                         TextButton(
                             child: const Icon(Icons.add),
                             onPressed: () {
+                              // tempTodoController.updateStartDate(selectingDay);
+                              // tempTodoController.updateEndDate(selectingDay);
+                              //
 
-                              print(selectingDay);
-                              // print(ref.watch(startTimeProvider));
+                              tempTodoController.updateAll(
+                                  "", false, selectingDay, selectingDay, "");
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddSchedulePage(
-                                    selectedDay: selectingDay,
-                                  ),
+                                  builder: (context) => AddSchedulePage(isEditing: false,),
                                 ),
                               );
                             }),
                       ],
                     ),
-                    // Expanded(
-                      //10
-                      //以下、Container()をStreamBuilder(...)に置き換え
-                      // child: // StreamBuilder(
-                      // //   stream: database.watchSamedayEntries(selecting_day),
-                      // //   builder: (BuildContext context,
-                      // //       AsyncSnapshot<List<Todo>> snapshot) {
-                      // //     if (snapshot.connectionState ==
-                      // //         ConnectionState.waiting) {
-                      // //       return const Center(
-                      // //           child: CircularProgressIndicator());
-                      // //     }
-                      // //     return (snapshot.data!.length == 0)
-                      // //         ? Center(child: Text("予定がありません"))
-                      // //         : ListView.builder(
-                      // //             //11
-                      // //             itemCount: snapshot.data!.length,
-                      // //             itemBuilder: (context, index) => ScheduleCard(
-                      // //                   snapshot: snapshot,
-                      // //                   index: index,
-                      // //                   selecting_day: selecting_day,
-                      // //                 ));
-                      // //   },
-                      // // ),
-                    // ),
+                    Expanded(
+                      child: StreamBuilder(
+                        stream: todoDataBaseController
+                            .readSameDayData(selectingDay),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<TodoItemData>> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          return (snapshot.data!.isEmpty)
+                              ? const Center(child: Text("予定がありません"))
+                              : ListView.builder(
+                                  //11
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) => ScheduleCard(
+                                    snapshot: snapshot,
+                                    index: index,
+                                  ),
+                                );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

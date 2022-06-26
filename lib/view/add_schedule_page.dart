@@ -1,23 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:stv_calender2/repository/schedule_db.dart';
+import 'package:stv_calender2/view/schedule_db_controller.dart';
+import 'package:stv_calender2/view/temp_schedule_vm.dart';
+
+import 'component/comment_form_widget.dart';
+import 'component/date_info_widget.dart';
+import 'component/title_form_widget.dart';
 
 class AddSchedulePage extends HookConsumerWidget {
   // const AddSchedulePage({Key? key}) : super(key: key);
 
-  AddSchedulePage({Key? key, this.selectedDay}) : super(key: key);
-  DateTime? selectedDay;
+  AddSchedulePage({Key? key, required this.isEditing, this.todo})
+      : super(key: key);
+  final isEditing;
+  final todo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _startDay = useState(selectedDay!);
-    final _endDay = useState(selectedDay!);
-    final _isAllDay = useState(false);
+    final tempTodoState = ref.watch(tempTodoProvider);
+    final tempTodoController = ref.read(tempTodoProvider.notifier);
+    final todoDataBaseController = ref.read(todoDatabaseProvider.notifier);
+
+    bool canSend = tempTodoState.title == "";
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("予定の追加"),
+        title: isEditing ? const Text("予定の編集") : const Text("予定の追加"),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.clear),
@@ -33,15 +43,31 @@ class AddSchedulePage extends HookConsumerWidget {
             width: 70,
             height: 20,
             child: ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                if (canSend = true) {
+                  if (isEditing==false) {
+                    todoDataBaseController.writeData(tempTodoState);
+                    Navigator.pop(context);
+                  } else {
+                    todoDataBaseController.updateData(
+                        todo, tempTodoState.title, tempTodoState.isAllDay, tempTodoState.startDay, tempTodoState.endDay, tempTodoState.comment);
+                    // todoDataBaseController.deleteData(todo);
+                    Navigator.pop(context);
+                  }
+                }
+              },
               style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.grey[300],
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)))),
-              child: const Text(
+                backgroundColor: Colors.grey[300],
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+              ),
+              child: Text(
                 "保存",
                 style: TextStyle(
-                  color: Colors.black,
+                  color: (canSend) ? Colors.grey : Colors.black,
                 ),
               ),
             ),
@@ -54,279 +80,30 @@ class AddSchedulePage extends HookConsumerWidget {
           margin: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-                // autovalidateMode:AutovalidateMode.always ,
-                // initialValue: (isEditing!)? todo!.title:"",
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: InputBorder.none,
-                  hintText: "タイトル",
-                ),
-                onChanged: (value) {},
-                onSaved: (value) {},
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                width: double.infinity,
-                height: 200,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 5.0, bottom: 0, left: 10.0, right: 3.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          const Text("終日"),
-                          Switch(
-                            value: _isAllDay.value,
-                            onChanged: (e) {
-                              _isAllDay.value = e;
-                            },
-                          ),
-                        ],
-                      ),
+              TitleFormWidget(),
+              DateInfoWidget(),
+              CommentFromWidget(),
+              Visibility(
+                visible: isEditing,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: TextButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      minimumSize: const Size.fromHeight(50), // NEW
                     ),
-                    const Divider(color: Colors.black),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0, right: 3.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          const Text("開始"),
-                          TextButton(
-                            onPressed: () {
-                              showCupertinoModalPopup(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  DateTime tempDay=_startDay.value;
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Color(0xff999999),
-                                                width: 0.0),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            CupertinoButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              padding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 16.0,
-                                                  vertical: 5.0),
-                                              child: const Text("キャンセル"),
-                                            ),
-                                            CupertinoButton(
-                                              onPressed: () {
-                                                // 変更
-                                                _startDay.value=tempDay;
-                                                Navigator.of(context).pop();
-                                              },
-                                              padding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 16.0,
-                                                  vertical: 5.0),
-                                              child: const Text("追加"),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        height:
-                                        MediaQuery
-                                            .of(context)
-                                            .size
-                                            .height /
-                                            3,
-                                        padding:
-                                        const EdgeInsets.only(top: 6.0),
-                                        color: CupertinoColors.white,
-                                        child: DefaultTextStyle(
-                                          style: const TextStyle(
-                                              color: CupertinoColors
-                                                  .black,
-                                              fontSize: 22.0),
-                                          child: GestureDetector(
-                                            onTap: () {},
-                                            child: SafeArea(
-                                              top: false,
-                                              child: CupertinoDatePicker(
-                                                use24hFormat: true,
-                                                minuteInterval: 15,
-                                                initialDateTime: _startDay
-                                                    .value,
-                                                onDateTimeChanged: (
-                                                    value) {
-                                                  tempDay = value;
-                                                  // ref.read(scheduleEndTimeProvider.state).update((state) => value);
-                                                },
-
-                                                mode: _isAllDay.value
-                                                    ? CupertinoDatePickerMode
-                                                    .date
-                                                    : CupertinoDatePickerMode
-                                                    .dateAndTime,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-
-                            child: Text(
-                              _isAllDay.value ? DateFormat("yyyy-MM-dd").format(
-                                  _startDay.value) : DateFormat(
-                                  "yyyy-MM-dd HH:mm").format(_startDay.value),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          )
-                        ],
-                      ),
+                    onPressed: () {
+                      todoDataBaseController.deleteData(todo);
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'この予定を削除',
+                      style: TextStyle(color: Colors.red),
                     ),
-                    const Divider(color: Colors.black),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 5.0, left: 10.0, right: 3.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          const Text("終了"),
-                          TextButton(
-                            onPressed: () {
-                              showCupertinoModalPopup(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  DateTime tempDay=_endDay.value;
-                                  // _endDay
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Color(0xff999999),
-                                                width: 0.0),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            CupertinoButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              padding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 16.0,
-                                                  vertical: 5.0),
-                                              child: const Text("キャンセル"),
-                                            ),
-                                            CupertinoButton(
-                                              onPressed: () {
-                                                // 変更
-                                                _endDay.value=tempDay;
-                                                Navigator.of(context).pop();
-                                              },
-                                              padding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 16.0,
-                                                  vertical: 5.0),
-                                              child: const Text("追加"),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        height:
-                                        MediaQuery
-                                            .of(context)
-                                            .size
-                                            .height /
-                                            3,
-                                        padding:
-                                        const EdgeInsets.only(top: 6.0),
-                                        color: CupertinoColors.white,
-                                        child: DefaultTextStyle(
-                                          style: const TextStyle(
-                                              color: CupertinoColors
-                                                  .black,
-                                              fontSize: 22.0),
-                                          child: GestureDetector(
-                                            onTap: () {},
-                                            child: SafeArea(
-                                              top: false,
-                                              child: CupertinoDatePicker(
-                                                use24hFormat: true,
-                                                minuteInterval: 15,
-                                                initialDateTime: _endDay
-                                                    .value,
-                                                onDateTimeChanged: (
-                                                    value) {
-                                                  tempDay = value;
-                                                  // ref.read(scheduleEndTimeProvider.state).update((state) => value);
-                                                },
-
-                                                mode: _isAllDay.value
-                                                    ? CupertinoDatePickerMode
-                                                    .date
-                                                    : CupertinoDatePickerMode
-                                                    .dateAndTime,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Text(
-                              _isAllDay.value ? DateFormat("yyyy-MM-dd").format(
-                                  _endDay.value) : DateFormat(
-                                  "yyyy-MM-dd HH:mm").format(_endDay.value),
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-
-
+              )
+              // ListView(children: tiles,)
             ],
           ),
         ),
