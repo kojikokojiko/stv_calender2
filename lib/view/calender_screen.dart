@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:stv_calender2/view/schedule_db_controller.dart';
-import 'package:stv_calender2/view/temp_schedule_vm.dart';
+
 import 'package:table_calendar/table_calendar.dart';
 
 import 'modal_slider.dart';
@@ -30,30 +30,30 @@ class CalenderScreen extends HookConsumerWidget {
     return key.day * 1000000 + key.month * 10000 + key.year;
   }
 
-  DateTime now=DateTime.now();
+  final DateTime now=DateTime.now();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _focusedDay = useState(DateTime.now());
+    final focusingDay = useState(DateTime.now());
     // final todoDataBaseController = ref.read(todoDatabaseProvider.notifier);
     final todos = ref.watch(todoDatabaseProvider).todoItems;
 
-    Map<DateTime, List> _eventsList = {};
+    Map<DateTime, List> eventsList = {};
     for (var item in todos) {
       DateTime date = DateTime(
           item.startDay!.year, item.startDay!.month, item.startDay!.day);
-      if (_eventsList.containsKey(date)) {
-        _eventsList[date]!.add(item);
+      if (eventsList.containsKey(date)) {
+        eventsList[date]!.add(item);
       } else {
-        _eventsList[date] = [item];
+        eventsList[date] = [item];
       }
     }
-    final _events = LinkedHashMap<DateTime, List>(
+    final events = LinkedHashMap<DateTime, List>(
       equals: isSameDay,
       hashCode: getHashCode,
-    )..addAll(_eventsList);
+    )..addAll(eventsList);
 
     List getEventForDay(DateTime day) {
-      return _events[day] ?? [];
+      return events[day] ?? [];
     }
 
     return Scaffold(
@@ -64,7 +64,7 @@ class CalenderScreen extends HookConsumerWidget {
       body: Column(
         children: [
           TableCalendar(
-            focusedDay: _focusedDay.value,
+            focusedDay: focusingDay.value,
             firstDay: DateTime(now.year-2,),
           // DateTime.utc(2020, 1, 1),
             lastDay: DateTime(now.year+2,  ),
@@ -87,7 +87,7 @@ class CalenderScreen extends HookConsumerWidget {
                 disabledTextStyle: TextStyle(color: Color(0xFFDCDCDC))),
             startingDayOfWeek: StartingDayOfWeek.monday,
             onDaySelected: (selectedDay, focusedDay) {
-              _focusedDay.value = focusedDay;
+              focusingDay.value = focusedDay;
 
               showModalBottomSheet(
                 isScrollControlled: true,
@@ -95,13 +95,13 @@ class CalenderScreen extends HookConsumerWidget {
                 context: context,
                 builder: (context) {
                   return ModalSlider(
-                    day: _focusedDay.value,
+                    day: focusingDay.value,
                   );
                 },
               );
             },
             onPageChanged: (focusedDay) {
-              _focusedDay.value = focusedDay;
+              focusingDay.value = focusedDay;
             },
             calendarBuilders: CalendarBuilders(
               headerTitleBuilder: (BuildContext context, DateTime day) {
@@ -118,7 +118,7 @@ class CalenderScreen extends HookConsumerWidget {
                         side: const BorderSide(color: Colors.black12),
                       ),
                       onPressed: () {
-                        _focusedDay.value = DateTime.now();
+                        focusingDay.value = DateTime.now();
                       },
                       child: const Text(
                         "今日",
@@ -138,7 +138,7 @@ class CalenderScreen extends HookConsumerWidget {
                             firstDate: DateTime(DateTime.now().year - 2),
                             lastDate: DateTime(DateTime.now().year + 2));
                         if (selctedDate == null) return;
-                        _focusedDay.value = selctedDate;
+                        focusingDay.value = selctedDate;
                       },
                       child: const Icon(Icons.arrow_drop_down_sharp),
                     )

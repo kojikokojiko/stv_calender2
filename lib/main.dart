@@ -22,15 +22,15 @@ class MyApp extends StatelessWidget {
     //
     return  MaterialApp(
 
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const [
         Locale('ja'),
       ],
-      locale: Locale("ja"),
+      locale: const Locale("ja"),
       home: CalenderScreen(),
     );
   }

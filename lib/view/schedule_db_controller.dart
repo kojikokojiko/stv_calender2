@@ -1,10 +1,8 @@
-import 'dart:collection';
 
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:stv_calender2/model/schedule_state_data.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../model/temp_schedule_model.dart';
 import '../repository/schedule_db.dart';

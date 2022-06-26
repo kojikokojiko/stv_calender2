@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../model/temp_schedule_model.dart';
+
 import '../temp_schedule_vm.dart';
 
 class TitleFormWidget extends ConsumerWidget {

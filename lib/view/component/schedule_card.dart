@@ -8,11 +8,11 @@ import '../temp_schedule_vm.dart';
 
 
 class ScheduleCard extends ConsumerWidget {
-  ScheduleCard({Key? key, this.snapshot,this.index,}) : super(key: key);
+  const ScheduleCard({Key? key, this.snapshot,this.index,}) : super(key: key);
 
 
-  AsyncSnapshot<List<TodoItemData>>? snapshot;
-  int? index;
+  final AsyncSnapshot<List<TodoItemData>>? snapshot;
+  final int? index;
 
 
   @override

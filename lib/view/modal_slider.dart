@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +15,7 @@ class ModalSlider extends HookConsumerWidget {
   final DateTime day;
   final diffDay = 8;
 
-  List<DateTime> dayList = [];
+  final List<DateTime> dayList = [];
 
   void setDayList(diffDay, day) {
     dayList.clear();
@@ -78,7 +77,7 @@ class ModalSlider extends HookConsumerWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddSchedulePage(isEditing: false,),
+                                  builder: (context) => const AddSchedulePage(isEditing: false,),
                                 ),
                               );
                             }),

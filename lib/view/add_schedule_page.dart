@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stv_calender2/repository/schedule_db.dart';
 import 'package:stv_calender2/view/schedule_db_controller.dart';
 import 'package:stv_calender2/view/temp_schedule_vm.dart';
 
@@ -12,7 +11,7 @@ import 'component/title_form_widget.dart';
 class AddSchedulePage extends HookConsumerWidget {
   // const AddSchedulePage({Key? key}) : super(key: key);
 
-  AddSchedulePage({Key? key, required this.isEditing, this.todo})
+  const AddSchedulePage({Key? key, required this.isEditing, this.todo})
       : super(key: key);
   final isEditing;
   final todo;
@@ -20,7 +19,7 @@ class AddSchedulePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tempTodoState = ref.watch(tempTodoProvider);
-    final tempTodoController = ref.read(tempTodoProvider.notifier);
+
     final todoDataBaseController = ref.read(todoDatabaseProvider.notifier);
 
     bool canSend = tempTodoState.title == "";
@@ -80,9 +79,9 @@ class AddSchedulePage extends HookConsumerWidget {
           margin: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              TitleFormWidget(),
-              DateInfoWidget(),
-              CommentFromWidget(),
+              const TitleFormWidget(),
+              const DateInfoWidget(),
+              const CommentFromWidget(),
               Visibility(
                 visible: isEditing,
                 child: Padding(
